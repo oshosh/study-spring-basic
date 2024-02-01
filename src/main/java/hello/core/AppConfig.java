@@ -18,17 +18,16 @@ public class AppConfig {
     return new MemberServiceImpl(memberRepository());
   }
 
-  // cmd + option + m하면 추출하여 리펙토링이 가능
-  @Bean
-  public MemoryMemberRepository memberRepository() {
-    return new MemoryMemberRepository();
-  }
-
   @Bean
   public OrderService orderService(){
     return new OrderServiceImpl(memberRepository(), discountPolicy());
   }
 
+  // cmd + option + m하면 추출하여 리펙토링이 가능
+  @Bean
+  public MemoryMemberRepository memberRepository() {
+    return new MemoryMemberRepository();
+  }
   @Bean
   public DiscountPolicy discountPolicy(){
 //    return new FixDiscountPolicy();
