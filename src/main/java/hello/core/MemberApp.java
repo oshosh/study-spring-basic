@@ -13,7 +13,8 @@ public class MemberApp {
 //    AppConfig appConfig = new AppConfig();
 //    MemberService memberService = appConfig.memberService();
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
-    MemberService memberService = applicationContext.getBean("memberService", MemberService.class); // AppConfig에 있는 메서드로 전부 등록이 됨
+    MemberService memberService = applicationContext.getBean("memberService",
+        MemberService.class);// AppConfig에 있는 메서드로 전부 등록이 됨
 
     Member member = new Member(1L, "memberA", Grade.VIP); // cmd + option + v 변수 생성
     memberService.join(member);
