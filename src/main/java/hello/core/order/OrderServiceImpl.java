@@ -4,34 +4,22 @@ import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.MemoryMemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor // final이 붙은걸 생성자로 생성함 (ctrl + f12로 확인 / cmd + f12)
 public class OrderServiceImpl implements OrderService{
+
   private final MemberRepository memberRepository;
   private final DiscountPolicy discountPolicy;
 
-//  private MemberRepository memberRepository;
-//  private DiscountPolicy discountPolicy;
-
 //  @Autowired
-//  public void setMemberRepository(MemberRepository memberRepository) {
-//    System.out.println("memberRepository = " + memberRepository);
-//    this.memberRepository = memberRepository; // 수정자 주입
+//  public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+//    this.memberRepository = memberRepository;
+//    this.discountPolicy = discountPolicy;
 //  }
-//  @Autowired
-//  public void setDiscount(DiscountPolicy discountPolicy) {
-//    System.out.println("discountPolicy = " + discountPolicy);
-//    this.discountPolicy = discountPolicy; // 수정자 주입
-//  }
-
-  @Autowired
-  public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-    this.memberRepository = memberRepository;
-    this.discountPolicy = discountPolicy;
-  }
-
 
   @Override
   public Order createOrder(Long memberId, String itemName, int itemPrice) {
