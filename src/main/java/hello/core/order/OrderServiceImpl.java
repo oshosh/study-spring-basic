@@ -1,5 +1,6 @@
 package hello.core.order;
 
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.discount.DiscountPolicy;
@@ -8,18 +9,45 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+//@Component
+//@RequiredArgsConstructor // final이 붙은걸 생성자로 생성함 (ctrl + f12로 확인 / cmd + f12)
+//public class OrderServiceImpl implements OrderService{
+//
+//  private final MemberRepository memberRepository;
+//  private final DiscountPolicy discountPolicy;
+//
+////  @Autowired
+////  public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+////    this.memberRepository = memberRepository;
+////    this.discountPolicy = discountPolicy;
+////  }
+//
+//  @Override
+//  public Order createOrder(Long memberId, String itemName, int itemPrice) {
+//    Member member = memberRepository.findById(memberId);
+//    int discountPrice = discountPolicy.discount(member, itemPrice);
+//
+//    return new Order(memberId, itemName, itemPrice, discountPrice);
+//  }
+//
+//  // 테스트 용도
+//  public MemberRepository getMemberRepository() {
+//    return memberRepository;
+//  }
+//}
+
+
 @Component
-@RequiredArgsConstructor // final이 붙은걸 생성자로 생성함 (ctrl + f12로 확인 / cmd + f12)
 public class OrderServiceImpl implements OrderService{
 
   private final MemberRepository memberRepository;
   private final DiscountPolicy discountPolicy;
 
-//  @Autowired
-//  public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-//    this.memberRepository = memberRepository;
-//    this.discountPolicy = discountPolicy;
-//  }
+  @Autowired
+  public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
+    this.memberRepository = memberRepository;
+    this.discountPolicy = discountPolicy;
+  }
 
   @Override
   public Order createOrder(Long memberId, String itemName, int itemPrice) {
