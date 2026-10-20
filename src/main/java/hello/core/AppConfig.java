@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Configuration;
 // call AppConfig.orderService
 @Configuration
 public class AppConfig {
+
   @Bean
   public MemberService memberService() {
     System.out.println("call AppConfig.memberService");

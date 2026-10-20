@@ -2,12 +2,16 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <!-- AppConfig에서 만들었던것과 똑같다 -->
+
+  <!-- 멤버 서비스 관련 bean 등록 -->
   <bean id="memberService" class="hello.core.member.MemberServiceImpl">
     <constructor-arg name="memberRepository" ref="memberRepository" />
   </bean>
-
   <bean id="memberRepository" class="hello.core.member.MemoryMemberRepository" />
 
+  <!-- 할인 정책 관련 bean 등록 -> 회원을 참조하고 회원에 따른 할인 정책을 가져오기 때문 -->
   <bean id="orderService" class="hello.core.order.OrderServiceImpl">
     <constructor-arg name="memberRepository" ref="memberRepository" />
     <constructor-arg name="discountPolicy" ref="discountPolicy" />

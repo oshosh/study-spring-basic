@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,28 +23,45 @@ public class ApplicationContextSameBeanFindTest {
   @Test
   @DisplayName("타입으로 조회시 같은 타입이 둘 이상 있으면, 중복 오류가 발생한다")
   void findBeanByTypeDuplicate(){
+    /*
+    * org.springframework.beans.factory.NoUniqueBeanDefinitionException:
+    * No qualifying bean of type 'hello.core.member.MemberRepository' available:
+    * expected single matching bean but found 2: memberRepository1,memberRepository2
+    *
+    * => 중복 발생!!
+    * */
 //    MemberRepository bean = ac.getBean(MemberRepository.class);
-    assertThrows(NoSuchBeanDefinitionException.class,
+    assertThrows(NoUniqueBeanDefinitionException.class,
         () -> ac.getBean(MemberRepository.class));
   }
 
   @Test
-  @DisplayName("타입으로 조회시 같은 타입이 둘 이상 있으면, 중복 오류가 발생한다")
+  @DisplayName("타입으로 조회시 같은 타입이 둘 이상 있으면, 빈 이름을 지정하면 된다")
   void findBeanByName(){
+    // memberRepository1 빈 이름을 지정함
     MemberRepository bean = ac.getBean("memberRepository1", MemberRepository.class);
     assertThat(bean).isInstanceOf(MemberRepository.class);
   }
 
   @Test
-  @DisplayName("측정 타입을 모두 조회하기")
+  @DisplayName("특정 타입을 모두 조회하기")
   void findAllBeanByType(){
     Map<String, MemberRepository> beansOfType = ac.getBeansOfType(MemberRepository.class);
+
+    /*
+    * key = memberRepository1 value = {memberRepository1=hello.core.member.MemoryMemberRepository@52c3cb31, memberRepository2=hello.core.member.MemoryMemberRepository@4b79ac84}
+    * key = memberRepository2 value = {memberRepository1=hello.core.member.MemoryMemberRepository@52c3cb31, memberRepository2=hello.core.member.MemoryMemberRepository@4b79ac84}
+    * */
     for (String key : beansOfType.keySet()) {
       System.out.println("key = " + key + " value = " + beansOfType);
       assertThat(beansOfType.size()).isEqualTo(2);
     }
   }
 
+  /*
+  * 중복 테스트를 위해 static class를 그냥 하나 만듬
+  * 빈의 이름이 다르고(memberRepository1, memberRepository2) 객체 인스턴트 타입(MemoryMemberRepository)이 같게 만듬
+  * */
   @Configuration
   static class SameBeanConfig {
     @Bean

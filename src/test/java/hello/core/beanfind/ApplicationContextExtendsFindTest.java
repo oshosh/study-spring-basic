@@ -1,4 +1,4 @@
-package hello.core;
+package hello.core.beanfind;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,6 +21,12 @@ public class ApplicationContextExtendsFindTest {
   @Test
   @DisplayName("부모 타입으로 조회시, 자식이 둘 이상 있으면, 중복 오류가 발생한다")
   void findBeanByParentTypeDuplicate() {
+    /*
+    * org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type 'hello.core.discount.DiscountPolicy' available: expected single matching bean but found 2: rateDiscountPolicy,fixDiscountPolicy
+    *
+    * */
+    // DiscountPolicy bean = ac.getBean(DiscountPolicy.class);
+
     assertThrows(NoUniqueBeanDefinitionException.class,
         () -> ac.getBean(DiscountPolicy.class));
   }
